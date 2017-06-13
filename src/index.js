@@ -152,7 +152,7 @@ export default class Calendar extends Component {
           }}
           contentContainerStyle={{width: 7 * rowHeight}}
           data={this.months}
-          ItemComponent={this._getComponent}
+          renderItem={this._getComponent}
           getItemLayout={this.getItemLayout}
           shouldItemUpdate={({parentProps}, {parentProps: nextParentProps}) => (
             parentProps.isScrolling !== nextParentProps.isScrolling ||
