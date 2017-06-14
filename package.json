@@ -13,6 +13,7 @@
     "lib",
     "src"
   ],
+  "main": "src/index.js",
   "dependencies": {
     "date-fns": "^1.27.2",
     "lodash": "^4.17.4"
