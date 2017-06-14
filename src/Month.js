@@ -70,34 +70,36 @@ export default class Month extends PureComponent {
     }
 
     return (
-      <View
-        style={[
-          styles.root,
-          {top: layout.offset, height: monthRows * rowHeight}
-        ]}
-        pointerEvents="box-none"
-      >
-        <Image
-          source={require('./assets/gradient.png')}
+      <View style={{height: layout.length}}>
+        <View
           style={[
-            styles.gradient,
-            {
-              top: rowHeight,
-              width: 7 * rowHeight,
-              height: monthRows * rowHeight
-            }
+            styles.root,
+            {height: monthRows * rowHeight}
           ]}
-          pointerEvents="none"
-          shouldRasterizeIOS={true}
-        />
-        {monthRows}
-        <Animated.View
-          style={[styles.overlay, {opacity: this.opacity}]}
-          pointerEvents="none"
-          shouldRasterizeIOS={true}
+          pointerEvents="box-none"
         >
-          <Text style={styles.overlayText}>{format(date, 'MMMM YYYY')}</Text>
-        </Animated.View>
+          <Image
+            source={require('./assets/gradient.png')}
+            style={[
+              styles.gradient,
+              {
+                top: rowHeight,
+                width: 7 * rowHeight,
+                height: monthRows * rowHeight
+              }
+            ]}
+            pointerEvents="none"
+            shouldRasterizeIOS={true}
+          />
+          {monthRows}
+          <Animated.View
+            style={[styles.overlay, {opacity: this.opacity}]}
+            pointerEvents="none"
+            shouldRasterizeIOS={true}
+          >
+            <Text style={styles.overlayText}>{format(date, 'MMMM YYYY')}</Text>
+          </Animated.View>
+        </View>
       </View>
     );
   }
