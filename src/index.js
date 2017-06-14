@@ -166,6 +166,7 @@ export default class Calendar extends Component {
           onEndReachedThreshold={1}
           onScroll={this.handleScroll}
           onMomentumScrollEnd={this.handleScrollEnd}
+          onScrollEndDrag={this.handleScrollEnd}
           isScrolling={isScrolling}
           canCancelContentTouches={true}
           selectedDate={+selectedDate}
