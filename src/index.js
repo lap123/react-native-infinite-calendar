@@ -139,6 +139,11 @@ export default class Calendar extends Component {
       />
     );
   };
+
+  _shouldItemUpdate = () => {
+    return this.state.isScrolling;
+  }
+
   render() {
     const {rowHeight} = this.props;
     const {isScrolling, selectedDate} = this.state;
@@ -154,10 +159,7 @@ export default class Calendar extends Component {
           data={this.months}
           renderItem={this._getComponent}
           getItemLayout={this.getItemLayout}
-          shouldItemUpdate={({parentProps}, {parentProps: nextParentProps}) => (
-            parentProps.isScrolling !== nextParentProps.isScrolling ||
-            parentProps.selectedDate !== nextParentProps.selectedDate
-          )}
+          shouldItemUpdate={this._shouldItemUpdate}
           keyExtractor={({year, month}) => `${year}:${month}`}
           initialNumToRender={3}
           windowSize={3}
