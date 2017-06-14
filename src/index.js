@@ -124,7 +124,7 @@ export default class Calendar extends Component {
   handleSelect = (selectedDate) => {
     this.setState({selectedDate});
   }
-  _getComponent = (item, index) => {
+  _getComponent = ({item, index}) => {
     const {rowHeight} = this.props;
     const {isScrolling, selectedDate} = this.state;
 
