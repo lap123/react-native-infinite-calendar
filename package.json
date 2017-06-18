@@ -16,7 +16,8 @@
   "main": "src/index.js",
   "dependencies": {
     "date-fns": "^1.27.2",
-    "lodash": "^4.17.4"
+    "lodash": "^4.17.4",
+    "prop-types": "^15.5.10"
   },
   "peerDependencies": {
     "react": "*",

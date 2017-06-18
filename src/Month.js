@@ -1,16 +1,19 @@
-import React, {PureComponent, PropTypes} from 'react';
+import React, {PureComponent} from 'react';
+import PropTypes from 'prop-types';
 import {Animated, Image, StyleSheet, Text, View} from 'react-native';
 import {getMonth} from './utils';
 import format from 'date-fns/format';
-import isSameMonth from 'date-fns/is_same_month';
-import Day from './Day';
 
 export default class Month extends PureComponent {
   static propTypes = {
-    item: PropTypes.object,
-    isScrolling: PropTypes.bool
+    item: PropTypes.object.isRequired,
+    isScrolling: PropTypes.bool.isRequired,
+    rowHeight: PropTypes.number.isRequired,
+    DayComponent: PropTypes.func.isRequired
   };
+
   opacity = new Animated.Value(Number(this.props.isScrolling));
+
   componentWillReceiveProps(nextProps) {
     if (nextProps.isScrolling !== this.props.isScrolling) {
       Animated.timing(this.opacity, {
@@ -18,15 +21,15 @@ export default class Month extends PureComponent {
       }).start();
     }
   }
+
   render() {
-    const {item, rowHeight, onSelect, selectedDate} = this.props;
+    const {item, rowHeight, DayComponent, ...rest} = this.props;
+
     let {year, month, layout} = item;
     let {rows, date} = getMonth(year, month);
     let monthRows = [];
     let day = 0;
     let row, days;
-    let isSelectedMonth = isSameMonth(selectedDate, date);
-    let selectedDay = isSelectedMonth ? selectedDate.getDate() : null;
 
     // Oh the things we do in the name of performance...
     for (let i = 0, len = rows.length; i < len; i++) {
@@ -39,16 +42,13 @@ export default class Month extends PureComponent {
         day = row[k];
 
         days[k] = (
-          <Day
+          <DayComponent
+            day={day}
             key={day}
-            index={day}
             monthDate={date}
             isFirstRow={isFirstRow}
             rowHeight={rowHeight}
-            onPress={onSelect}
-            isSelected={
-              isSelectedMonth && selectedDay !== null && selectedDay === day
-            }
+            {...rest}
           />
         );
       }
@@ -70,11 +70,10 @@ export default class Month extends PureComponent {
     }
 
     return (
-      <View style={{height: layout.length}}>
         <View
           style={[
             styles.root,
-            {height: monthRows * rowHeight}
+            {top: layout.offset, height: monthRows * rowHeight},
           ]}
           pointerEvents="box-none"
         >
@@ -100,7 +99,6 @@ export default class Month extends PureComponent {
             <Text style={styles.overlayText}>{format(date, 'MMMM YYYY')}</Text>
           </Animated.View>
         </View>
-      </View>
     );
   }
 }

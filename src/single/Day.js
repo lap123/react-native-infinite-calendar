@@ -1,26 +1,35 @@
-import React, {PropTypes, PureComponent} from 'react';
+import React, {PureComponent} from 'react';
+import PropTypes from 'prop-types';
 import {StyleSheet, Text, View} from 'react-native';
 import format from 'date-fns/format';
+import isSameMonth from 'date-fns/is_same_month';
 
 export default class Day extends PureComponent {
   static propTypes = {
-    day: PropTypes.number,
-    rowHeight: PropTypes.number,
-    monthDate: PropTypes.instanceOf(Date),
-    index: PropTypes.number,
-    isFirstRow: PropTypes.bool,
-    isSelected: PropTypes.bool,
-    onPress: PropTypes.func
+    day: PropTypes.number.isRequired,
+    rowHeight: PropTypes.number.isRequired,
+    monthDate: PropTypes.instanceOf(Date).isRequired,
+    isFirstRow: PropTypes.bool.isRequired,
+    onSelect: PropTypes.func.isRequired,
+    selectedDate: PropTypes.instanceOf(Date).isRequired
   };
-  handlePress = () => {
-    const {index, onPress, monthDate} = this.props;
 
-    onPress(new Date(monthDate.setDate(index)));
+  handlePress = e => {
+    const {day, onSelect, monthDate} = this.props;
+
+    onSelect(new Date(monthDate.setDate(day)));
   };
+
   render() {
-    const {monthDate, index, isFirstRow, isSelected, rowHeight} = this.props;
-    let isFirstDay = index === 1;
-    let text = (
+    const {day, monthDate, isFirstRow, rowHeight, selectedDate} = this.props;
+
+    const isSelectedMonth = isSameMonth(selectedDate, monthDate);
+    const selectedDay = isSelectedMonth ? selectedDate.getDate() : null;
+    const isSelected = isSelectedMonth && selectedDay !== null && selectedDay === day;
+
+    const isFirstDay = day === 1;
+
+    const text = (
       <Text
         style={[
           styles.day,
@@ -35,9 +44,9 @@ export default class Day extends PureComponent {
         {isFirstDay
           ? <Text>
               <Text style={styles.small}>{format(monthDate, 'MMM')}</Text>
-              {`\n${index}`}
+              {`\n${day}`}
             </Text>
-          : index
+          : day
         }
       </Text>
     );
